@@ -30,24 +30,8 @@ public class ReportServiceImplement implements ReportService {
     @Override
     public byte[] generateEmployeeReport(String department, LocalDate startDate, LocalDate endDate) throws Exception {
         try {
-//            JasperReport mainReport = JasperCompileManager.compileReport(
-//                    ResourceUtils.getFile(reportPath + "employee_report.jrxml").getAbsolutePath()
-//            );
             InputStream mainReportStream = getClass().getResourceAsStream("/reports/employee_report.jasper");
             JasperReport mainReport = (JasperReport) JRLoader.loadObject(mainReportStream);
-
-//            JasperReport jobHistorySubReport = JasperCompileManager.compileReport(
-//                    ResourceUtils.getFile(reportPath + "job_history_subreport.jrxml").getAbsolutePath()
-//            );
-//            JasperReport performanceSubReport = JasperCompileManager.compileReport(
-//                    ResourceUtils.getFile(reportPath + "performance_evaluation_subreport.jrxml").getAbsolutePath()
-//            );
-//            JasperReport salaryTrensSubReport = JasperCompileManager.compileReport(
-//                    ResourceUtils.getFile(reportPath + "salary_trends_subreport.jrxml").getAbsolutePath()
-//            );
-//            JasperReport departmentSummarySubReport = JasperCompileManager.compileReport(
-//                    ResourceUtils.getFile(reportPath + "department_summary_subreport.jrxml").getAbsolutePath()
-//            );
 
             InputStream jobHistoryStream = getClass().getResourceAsStream("/reports/job_history_subreport.jasper");
             JasperReport jobHistorySubReport = (JasperReport) JRLoader.loadObject(jobHistoryStream);
@@ -109,10 +93,8 @@ public class ReportServiceImplement implements ReportService {
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("SUBREPORT_DIR", getClass().getResource("/reports/").toString());
 
-            // Get a single employee by ID
             Employee employee = employeeService.getEmployeeById(employeeId);
 
-            // Create a list with just this one employee
             List<Employee> employees = Collections.singletonList(employee);
 
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(employees);

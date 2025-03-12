@@ -32,9 +32,7 @@
     <variable name="totalEmployees" class="java.lang.Integer" calculation="Count">
         <variableExpression><![CDATA[$F{id}]]></variableExpression>
     </variable>
-
-
-
+    
     <!-- Title -->
     <title>
         <band height="70" splitType="Stretch">
