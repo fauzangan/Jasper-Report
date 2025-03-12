@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="department_summary_subreport" pageWidth="555" pageHeight="842" whenNoDataType="AllSectionsNoDetail"
+              columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+
+    <!-- Query -->
+    <queryString>
+        <![CDATA[SELECT department, COUNT(*) as employee_count, AVG(current_salary) as avg_salary
+          FROM employees
+          GROUP BY department
+          ORDER BY employee_count DESC]]>
+    </queryString>
+
+    <!-- Fields -->
+    <field name="department" class="java.lang.String"/>
+    <field name="employee_count" class="java.lang.Long"/>
+    <field name="avg_salary" class="java.math.BigDecimal"/>
+
+    <!-- Column Header -->
+    <columnHeader>
+        <band height="20" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="200" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Department]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="0" width="155" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Employee Count]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="355" y="0" width="200" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Average Salary]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- Detail -->
+    <detail>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="200" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{department}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="200" y="0" width="155" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{employee_count}]]></textFieldExpression>
+            </textField>
+            <textField pattern="$#,##0.00">
+                <reportElement x="355" y="0" width="200" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{avg_salary}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- Summary -->
+    <summary>
+        <band height="150" splitType="Stretch">
+            <!-- Pie Chart for Department Distribution -->
+            <pieChart>
+                <chart evaluationTime="Report">
+                    <reportElement x="0" y="10" width="555" height="140"/>
+                    <chartTitle>
+                        <titleExpression><![CDATA["Employee Distribution by Department"]]></titleExpression>
+                    </chartTitle>
+                    <chartSubtitle/>
+                    <chartLegend/>
+                </chart>
+                <pieDataset>
+                    <keyExpression><![CDATA[$F{department}]]></keyExpression>
+                    <valueExpression><![CDATA[$F{employee_count}]]></valueExpression>
+                    <labelExpression><![CDATA[$F{department} + " (" + $F{employee_count} + ")"]]></labelExpression>
+                </pieDataset>
+                <piePlot>
+                    <plot/>
+                    <itemLabel/>
+                </piePlot>
+            </pieChart>
+        </band>
+    </summary>
+
+    <!-- No Data -->
+    <noData>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[No department summary data available.]]></text>
+            </staticText>
+        </band>
+    </noData>
+</jasperReport>

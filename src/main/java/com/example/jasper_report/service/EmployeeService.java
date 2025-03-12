@@ -10,7 +10,7 @@ import java.util.List;
 public interface EmployeeService {
     List<Employee> getAllEmployees();
     Employee getEmployeeById(Long id);
-    List<Employee> getEmploteesByDepartment(String department);
+    List<Employee> getEmployeesByDepartment(String department);
     List<Employee> getEmployeesByDateRange(LocalDate startDate, LocalDate endDate);
     List<Employee> getEmployeesByDepartmentAndDateRange(String department, LocalDate startDate, LocalDate endDate);
     List<JobHistory> getJobHistoryByEmployeeId(Long employeeId);

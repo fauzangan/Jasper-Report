@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="performance_evaluation_subreport" pageWidth="555" pageHeight="842" whenNoDataType="AllSectionsNoDetail"
+              columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+    <!-- Style for poor performance -->
+    <style name="PerformanceHighlight">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$F{rating}.compareTo(new java.math.BigDecimal(3)) < 0]]></conditionExpression>
+            <style forecolor="#FF0000" isBold="true"/>
+        </conditionalStyle>
+    </style>
+
+    <!-- Parameters -->
+    <parameter name="employeeId" class="java.lang.Long"/>
+
+    <!-- Query -->
+    <queryString>
+        <![CDATA[SELECT * FROM performance_evaluations WHERE employee_id = $P{employeeId} ORDER BY year DESC]]>
+    </queryString>
+
+    <!-- Fields -->
+    <field name="id" class="java.lang.Long"/>
+    <field name="year" class="java.lang.Integer"/>
+    <field name="rating" class="java.math.BigDecimal"/>
+    <field name="feedback" class="java.lang.String"/>
+    <field name="evaluation_date" class="java.sql.Date"/>
+
+
+
+
+    <!-- Column Header -->
+    <columnHeader>
+        <band height="20" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="70" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Year]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="70" y="0" width="70" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Rating]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="140" y="0" width="280" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Feedback]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="420" y="0" width="135" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[Evaluation Date]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- Detail -->
+    <detail>
+        <band height="20" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="70" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{year}]]></textFieldExpression>
+            </textField>
+            <textField pattern="#0.0">
+                <reportElement style="PerformanceHighlight" x="70" y="0" width="70" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{rating}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="140" y="0" width="280" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{feedback}]]></textFieldExpression>
+            </textField>
+            <textField pattern="dd/MM/yyyy">
+                <reportElement x="420" y="0" width="135" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{evaluation_date}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- No Data -->
+    <noData>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <text><![CDATA[No performance evaluation records found for this employee.]]></text>
+            </staticText>
+        </band>
+    </noData>
+</jasperReport>
